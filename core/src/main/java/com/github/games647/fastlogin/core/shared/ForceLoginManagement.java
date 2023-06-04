@@ -59,7 +59,7 @@ public abstract class ForceLoginManagement<P extends C, C, L extends LoginSessio
         StoredProfile playerProfile = session.getProfile();
         try {
             if (isOnlineMode()) {
-                //premium player
+                //premium player or bedrock player attempt to auto login
                 AuthPlugin<P> authPlugin = core.getAuthPluginHook();
                 if (authPlugin == null) {
                     //maybe only bungeecord plugin
@@ -81,7 +81,13 @@ public abstract class ForceLoginManagement<P extends C, C, L extends LoginSessio
                         //update only on success to prevent corrupt data
                         if (playerProfile != null) {
                             playerProfile.setId(session.getUuid());
-                            playerProfile.setPremium(true);
+                            //uncertain whether is a premium or a bedrock player that try to auto login
+                            //we have to query this
+                            //but it is conflict with current implementation
+                            // but... this code only need to work on Imeaces!
+                            // if is a floodgate player performing bedrock player check
+                            //playerProfile.setPremium(true);
+                            //so we wont update premium stat on login in uncertain online mode
                             storage.save(playerProfile);
                         }
 
